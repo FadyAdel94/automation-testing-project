@@ -39,7 +39,7 @@ public class OpenCourseDetailsTest {
         });
 
         Allure.step("Assert course details page URL", () ->
-                Assert.assertTrue(driver.getCurrentUrl().contains("/details"),
+                Assert.assertTrue(driver.getCurrentUrl().contains("/courses/"),
                         "URL should contain '/details' on course details page")
         );
         Allure.step("Check 'حول الدورة التدريبية' section is present", () ->

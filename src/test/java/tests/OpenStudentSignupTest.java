@@ -32,12 +32,12 @@ public class OpenStudentSignupTest {
     public void testJoinAsStudentSignup() {
         Allure.step("Click 'Join as Student' button", () -> homePage.openJoinAsStudent());
 
-        Allure.step("Wait and verify navigation to /signup", () -> {
+        Allure.step("Wait and verify navigation to /register", () -> {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            wait.until(ExpectedConditions.urlContains("/signup"));
+            wait.until(ExpectedConditions.urlContains("/register"));
             Assert.assertTrue(
-                    driver.getCurrentUrl().contains("/signup"),
-                    "User should navigate to /signup after clicking 'انضم لنا كطالب'"
+                    driver.getCurrentUrl().contains("/register"),
+                    "User should navigate to /register after clicking 'حساب جديد'"
             );
         });
     }

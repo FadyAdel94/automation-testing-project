@@ -27,10 +27,11 @@ public class SubscribeCourseEndToEndTest {
     private WebDriverWait wait;
 
     // Replace these values or use a config in production!
-    private final String validUsername = "FadyAdel94";
-    private final String validPassword = "12345678";
+    private final String validUsername = "fady.adel.g94@gmail.com";
+    private final String validPassword = "SecretPass1@";
     private final String baseUrl = "https://eyouthlearning.com/";
-    private final String courseTitle = "Banking Risk Management Basics | أساسيات إدارة المخاطر المصرفية";
+    private final String courseTitle = "تحليل البيانات عبر Power BI";
+    private final String courseUrl = "/ar/courses/power-bi-for-data-analysis";
 
     @BeforeClass
     public void setup() {
@@ -56,7 +57,8 @@ public class SubscribeCourseEndToEndTest {
             loginPage.clickLogin();
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//p[text()='" + validUsername + "']")));
+                    By.xpath("//a[@href='/ar/my-learning' and text()='رحلتي التعليمية']"))
+            );
         });
 
         Allure.step("Navigate to all courses", () -> homePage.clickAllCoursesMenu());
@@ -64,7 +66,7 @@ public class SubscribeCourseEndToEndTest {
         Allure.step("Subscribe to first course", () -> coursesPage.subscribeToFirstCourse());
 
         Allure.step("Assert course is in cart", () -> Assert.assertTrue(
-                cartPage.isCoursePresentInCart(courseTitle),
+                cartPage.isCoursePresentInCart(courseUrl),
                 "The course should be present in the cart after subscription."
         ));
     }

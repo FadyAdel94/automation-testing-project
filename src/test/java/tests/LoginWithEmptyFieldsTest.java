@@ -37,7 +37,7 @@ public class LoginWithEmptyFieldsTest {
 
         Allure.step("Assert username required error is displayed", () ->
                 Assert.assertTrue(loginPage.isUsernameRequiredErrorDisplayed(),
-                        "Username required validation should be displayed (اسم المستخدم مطلوب)")
+                        "Username required validation should be displayed (البريد الإلكتروني مطلوب)")
         );
         Allure.step("Assert password required error is displayed", () ->
                 Assert.assertTrue(loginPage.isPasswordRequiredErrorDisplayed(),

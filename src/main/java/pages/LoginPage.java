@@ -10,13 +10,13 @@ public class LoginPage {
     private WebDriverWait wait;
 
     // Locators based on your HTML
-    private By loginNavButton = By.cssSelector(".navbar_btn_signin__aLCnP");
-    private By usernameInput = By.id("username");
+    private By loginNavButton = By.cssSelector("a[href*='/auth/login']");
+    private By usernameInput = By.id("email");
     private By passwordInput = By.id("password");
-    private By submitButton = By.cssSelector(".btn.btn-primary[type='submit'], .btn.btn-primary.mx-1[type='submit']");
-    private By errorMessage = By.xpath("//*[contains(@class,'MuiAlert-message') and contains(text(),'اسم المستخدم أو كلمة المرور غير صحيحة')]");
-    private By usernameRequiredError = By.id("username-helper-text");
-    private By passwordRequiredError = By.id("password-helper-text");
+    private By submitButton = By.cssSelector("[type='submit']");
+    private By errorMessage = By.cssSelector(".text-\\[red\\]");
+    private By usernameRequiredError = By.cssSelector(".text-\\[red\\]");
+    private By passwordRequiredError = By.cssSelector(".text-\\[red\\]");
 
 
     public LoginPage(WebDriver driver) {
@@ -52,7 +52,7 @@ public class LoginPage {
     public boolean isUsernameRequiredErrorDisplayed() {
         try {
             WebElement err = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameRequiredError));
-            return err.getText().trim().contains("اسم المستخدم مطلوب");
+            return err.getText().trim().contains("البريد الإلكتروني مطلوب");
         } catch (TimeoutException e) {
             return false;
         }
@@ -61,7 +61,7 @@ public class LoginPage {
     public boolean isPasswordRequiredErrorDisplayed() {
         try {
             WebElement err = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordRequiredError));
-            return err.getText().trim().contains("اسم المستخدم مطلوب") || err.getText().trim().contains("كلمة المرور مطلوبة");
+            return err.getText().trim().contains("البريد الإلكتروني مطلوب") || err.getText().trim().contains("كلمة المرور مطلوبة");
         } catch (TimeoutException e) {
             return false;
         }

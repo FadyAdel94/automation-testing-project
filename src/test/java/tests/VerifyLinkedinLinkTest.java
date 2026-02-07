@@ -37,7 +37,20 @@ public class VerifyLinkedinLinkTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Click footer Linkedin icon, check that correct Linkedin page opens")
     public void testLinkedinFooterLink() {
+        String originalWindow = driver.getWindowHandle();
+        int initialWindows = driver.getWindowHandles().size();
+
         Allure.step("Click Linkedin icon in footer", () -> footerPage.clickLinkedinLink());
+
+        // Wait for the new tab to open
+        wait.until(d -> d.getWindowHandles().size() > initialWindows);
+
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindow)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
 
         Allure.step("Assert new tab contains linkedin.com", () -> {
             boolean foundLinkedin = wait.until(wd ->

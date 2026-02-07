@@ -35,7 +35,20 @@ public class VerifyFacebookLinkTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Click footer Facebook icon, check that correct Facebook page opens")
     public void testFacebookFooterLink() {
+        String originalWindow = driver.getWindowHandle();
+        int initialWindows = driver.getWindowHandles().size();
+
         Allure.step("Click Facebook icon in footer", () -> footerPage.clickFacebookLink());
+
+        // Wait for the new tab to open
+        wait.until(d -> d.getWindowHandles().size() > initialWindows);
+
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindow)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
 
         Allure.step("Assert new tab contains facebook.com", () -> {
             boolean foundFacebook = wait.until(wd ->

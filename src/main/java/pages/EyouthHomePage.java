@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,9 +14,8 @@ public class EyouthHomePage {
 
     private By searchField = By.cssSelector("input[placeholder='بحث'], input[type='search'], .search-icon input");
     private By searchButton = By.cssSelector(".search-button, button[type='submit'], .search-icon button");
-    private By allCoursesMenu = By.cssSelector("a[href='/all-courses']");
-    private By joinUsButton = By.cssSelector(".navbar_btn_signup__z4Cok");
-    private By joinStudentButton = By.xpath("//a[@href='/signup' and .//div[contains(text(),'انضم لنا كطالب')]]");
+    private By allCoursesMenu = By.cssSelector("a[href='/ar/courses']");
+    private By joinUsButton = By.xpath("//a[@href='/ar/auth/register' and contains(text(),'حساب جديد')]");
 
 
     public EyouthHomePage(WebDriver driver) {
@@ -28,26 +28,23 @@ public class EyouthHomePage {
         input.clear();
         input.sendKeys(keyword);
 
-        wait.until(drv -> input.getAttribute("aria-expanded").equals("true"));
-        WebElement firstSuggestion = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("highlights-demo-option-0")));
-        firstSuggestion.click();
+        WebElement result = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("a[href='/ar/courses/how-to-join-a-bank']"))
+        );
+        result.click();
     }
 
-    public void clickSearch() {
-        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(searchButton));
-        btn.click();
-    }
-
-    public void clickAllCoursesMenu() {
+    public void clickAllCoursesMenu() throws InterruptedException {
         WebElement allCourses = wait.until(ExpectedConditions.elementToBeClickable(allCoursesMenu));
         allCourses.click();
+        ((JavascriptExecutor) driver).executeScript(
+                "document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', code: 'Escape', bubbles: true}));"
+        );
+        Thread.sleep(500);
     }
 
     public void openJoinAsStudent() {
         WebElement joinBtn = wait.until(ExpectedConditions.elementToBeClickable(joinUsButton));
         joinBtn.click();
-
-        WebElement joinStudent = wait.until(ExpectedConditions.elementToBeClickable(joinStudentButton));
-        joinStudent.click();
     }
 }

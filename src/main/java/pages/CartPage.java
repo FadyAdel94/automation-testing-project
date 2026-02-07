@@ -15,12 +15,12 @@ public class CartPage {
     }
 
     // Method to assert the course is present in the cart by its title
-    public boolean isCoursePresentInCart(String courseTitle) {
+    public boolean isCoursePresentInCart(String courseUrl) {
         try {
-            WebElement course = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//div[contains(@class,'cardContent')]//h5[contains(text(),'" + courseTitle + "')]")
-            ));
-            return course.isDisplayed();
+            WebElement courseLink = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//a[@href='" + courseUrl + "']"))
+            );
+            return courseLink.isDisplayed();
         } catch (TimeoutException e) {
             return false;
         }

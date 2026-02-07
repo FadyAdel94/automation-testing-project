@@ -33,7 +33,6 @@ public class SearchTest {
     public void testSearchWithValidKeyword() {
         String keyword = "كيف تنضم إلى البنك";
         Allure.step("Enter the search keyword", () -> homePage.enterSearchKeyword(keyword));
-        Allure.step("Click search", () -> homePage.clickSearch());
 
         Allure.step("Wait for page title to contain the keyword", () -> {
             boolean titleContainsKeyword = false;

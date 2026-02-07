@@ -20,7 +20,7 @@ public class RegisterWithEmptyUsernameTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.get("https://eyouthlearning.com/signup");
+        driver.get("https://eyouthlearning.com/ar/auth/register");
         regPage = new RegistrationPage(driver);
     }
 
@@ -31,9 +31,9 @@ public class RegisterWithEmptyUsernameTest {
     public void testEmptyUsernameShowsValidation() {
         Allure.step("Fill registration form except username", () -> regPage.fillRegistrationFormExceptUsername(
                 "Test Name",
-                "eg",
-                "m",
-                "Alexandria",
+                "68",
+                "Male",
+                "80",
                 "test@example.com",
                 "01232223334",
                 "SecretPass1@",
@@ -42,7 +42,7 @@ public class RegisterWithEmptyUsernameTest {
         Allure.step("Submit the registration form", () -> regPage.clickSubmit());
         Allure.step("Assert username required error is present", () ->
                 Assert.assertTrue(regPage.isUsernameRequiredErrorPresent(),
-                        "Validation error 'اسم المستخدم مطلوب' should be displayed."));
+                        "Validation error 'البريد الإلكتروني مطلوب' should be displayed."));
     }
 
     @AfterClass

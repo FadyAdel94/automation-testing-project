@@ -14,7 +14,7 @@ import java.time.Duration;
 public class VerifyCourseCardUITest {
     private WebDriver driver;
     private CoursesPage coursesPage;
-    private final String coursesUrl = "https://eyouthlearning.com/all-courses"; // Update if needed
+    private final String coursesUrl = "https://eyouthlearning.com/courses"; // Update if needed
 
     @BeforeClass
     public void setup() {

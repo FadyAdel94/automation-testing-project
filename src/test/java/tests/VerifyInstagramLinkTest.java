@@ -37,7 +37,20 @@ public class VerifyInstagramLinkTest {
     @Severity(SeverityLevel.NORMAL)
     @Description("Click footer Instagram icon, check that correct Instagram page opens")
     public void testInstagramFooterLink() {
+        String originalWindow = driver.getWindowHandle();
+        int initialWindows = driver.getWindowHandles().size();
+
         Allure.step("Click Instagram icon in footer", () -> footerPage.clickInstagramLink());
+
+        // Wait for the new tab to open
+        wait.until(d -> d.getWindowHandles().size() > initialWindows);
+
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindow)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
 
         Allure.step("Assert new tab contains instagram.com", () -> {
             boolean foundInstagram = wait.until(wd ->

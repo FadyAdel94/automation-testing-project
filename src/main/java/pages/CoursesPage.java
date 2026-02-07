@@ -9,12 +9,12 @@ public class CoursesPage {
     private WebDriver driver;
     private WebDriverWait wait;
 
-    private By courseDetailsSection =  By.xpath("//section[contains(@class,'about')]//h2[contains(text(),'حول الدورة التدريبية')]");
-    private final By courseCard = By.cssSelector(".course-card");
-    private final By courseImage = By.cssSelector(".course-card .MuiCardMedia-root");
-    private final By courseTitle = By.cssSelector(".course-card strong > p");
-    private final By instructorName = By.cssSelector(".course-card span.text-capitalize strong");
-    private final By subscribeButton = By.cssSelector(".course-card button");
+    private By courseDetailsSection = By.xpath("//h3[contains(text(),'نظرة عامة')]");
+    private final By courseCard = By.xpath("//a[@href='/ar/courses/power-bi-for-data-analysis']/parent::div[contains(@class,'border-light-blue')]");
+    private final By courseImage = By.cssSelector(".rounded-lg img[alt*='تحليل البيانات عبر Power BI']");
+    private final By courseTitle = By.cssSelector("h3.text-primary-blue-900");
+    private final By instructorName = By.cssSelector("h6.text-secondary");
+    private final By subscribeButton = By.xpath("//button[normalize-space(text())='اشترك الآن']");
 
     public CoursesPage(WebDriver driver) {
         this.driver = driver;
@@ -24,6 +24,11 @@ public class CoursesPage {
     public void openCourseCard() {
         WebElement firstCard = wait.until(ExpectedConditions.visibilityOfElementLocated(courseCard));
         firstCard.click();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public boolean isCourseDetailsSectionVisible() {
@@ -36,9 +41,19 @@ public class CoursesPage {
     }
 
     public void subscribeToFirstCourse() {
-        WebElement subscribeBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("(//button[contains(text(),'اشترك')])[1]")));
-        subscribeBtn.click();
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+                "document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', code: 'Escape', bubbles: true}));"
+        );
+
+        By subscribeBtnLocator = By.xpath("//button[normalize-space(text())='اشترك الآن']");
+        WebElement subscribeBtn = wait.until(ExpectedConditions.elementToBeClickable(subscribeBtnLocator));
+        try {
+            subscribeBtn.click();
+        } catch (StaleElementReferenceException e) {
+            // Re-locate and retry click
+            subscribeBtn = wait.until(ExpectedConditions.elementToBeClickable(subscribeBtnLocator));
+            subscribeBtn.click();
+        }
     }
 
     public WebElement getCourseCard() {
@@ -46,10 +61,9 @@ public class CoursesPage {
     }
 
     public boolean isCourseImageDisplayed() {
-        WebElement imageDiv = wait.until(ExpectedConditions.visibilityOfElementLocated(courseImage));
-        String bgImage = imageDiv.getCssValue("background-image");
-        // Assert it contains a URL (not 'none')
-        return bgImage != null && bgImage.startsWith("url");
+        WebElement image = wait.until(ExpectedConditions.visibilityOfElementLocated(courseImage));
+        String src = image.getAttribute("src");
+        return image.isDisplayed() && src != null && !src.trim().isEmpty();
     }
 
     public String getCourseTitle() {
